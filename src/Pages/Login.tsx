@@ -1,7 +1,7 @@
 // src/Pages/LoginPage.tsx
 import React, { useEffect, useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
@@ -25,23 +25,23 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const userEmail = result.user.email || "";
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     const userEmail = result.user.email || "";
 
-      if (!["guard@guard.com", "admin@admin.com"].includes(userEmail)) {
-        await auth.signOut();
-        alert("Unauthorized user");
-        return;
-      }
+  //     if (!["guard@guard.com", "admin@admin.com"].includes(userEmail)) {
+  //       await auth.signOut();
+  //       alert("Unauthorized user");
+  //       return;
+  //     }
 
-      navigate(userEmail === "guard@guard.com" ? "/guard" : "/admin");
-    } catch (error) {
-      console.error("Google login failed", error);
-      alert("Google login failed");
-    }
-  };
+  //     navigate(userEmail === "guard@guard.com" ? "/guard" : "/admin");
+  //   } catch (error) {
+  //     console.error("Google login failed", error);
+  //     alert("Google login failed");
+  //   }
+  // };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -103,7 +103,7 @@ const LoginPage: React.FC = () => {
           </button>
 
           {/* 💎 Stylish Google Button */}
-          <button onClick={handleGoogleLogin} style={styles.googleButton}>
+          {/* <button onClick={handleGoogleLogin} style={styles.googleButton}>
             <span style={styles.googleIcon}>
               <svg
                 width="20"
@@ -131,7 +131,7 @@ const LoginPage: React.FC = () => {
               </svg>
             </span>
             <span style={styles.googleText}>Sign in with Google</span>
-          </button>
+          </button> */}
 
           <div style={styles.links}>
             <Link to="/privacy-policy" style={styles.link}>
