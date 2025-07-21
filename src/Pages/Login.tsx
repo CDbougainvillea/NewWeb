@@ -5,6 +5,11 @@ import { auth } from "../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import {
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+} from "firebase/auth";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -25,23 +30,33 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     const result = await signInWithPopup(auth, googleProvider);
-  //     const userEmail = result.user.email || "";
+  // const handleGoogleLogin
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-  //     if (!["guard@guard.com", "admin@admin.com"].includes(userEmail)) {
-  //       await auth.signOut();
-  //       alert("Unauthorized user");
-  //       return;
-  //     }
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  };
 
-  //     navigate(userEmail === "guard@guard.com" ? "/guard" : "/admin");
-  //   } catch (error) {
-  //     console.error("Google login failed", error);
-  //     alert("Google login failed");
-  //   }
-  // };
+
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          const email = result.user.email || "";
+          if (!["guard@guard.com", "admin@admin.com"].includes(email)) {
+            auth.signOut();
+            alert("Unauthorized user");
+            return;
+          }
+          navigate(email === "guard@guard.com" ? "/guard" : "/admin");
+        }
+      })
+      .catch((error) => {
+        console.error("Google redirect login failed", error);
+      });
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -103,35 +118,23 @@ const LoginPage: React.FC = () => {
           </button>
 
           {/* 💎 Stylish Google Button */}
-          {/* <button onClick={handleGoogleLogin} style={styles.googleButton}>
-            <span style={styles.googleIcon}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.54 0 6.72 1.22 9.2 3.23l6.86-6.86C35.94 2.1 30.34 0 24 0 14.92 0 6.97 5.52 2.86 13.5l7.99 6.2C13.08 13.9 18.14 9.5 24 9.5z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M46.5 24c0-1.36-.14-2.68-.41-3.94H24v7.48h12.7c-1.08 3.1-3.27 5.67-6.22 7.42l8.03 6.22C42.99 36.14 46.5 30.6 46.5 24z"
-                />
-                <path
-                  fill="#4A90E2"
-                  d="M10.84 27.66c-.5-1.48-.78-3.06-.78-4.66s.28-3.18.78-4.66l-7.99-6.2C.94 16.88 0 20.34 0 24s.94 7.12 2.86 10.34l7.98-6.2z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M24 46.5c6.34 0 11.94-2.1 16.06-5.92l-8.03-6.22c-2.23 1.5-5.02 2.38-8.03 2.38-5.86 0-10.92-4.4-13.14-10.2l-7.99 6.2C6.97 42.48 14.92 46.5 24 46.5z"
-                />
-              </svg>
-            </span>
-            <span style={styles.googleText}>Sign in with Google</span>
-          </button> */}
+          <button onClick={handleGoogleLogin} style={styles.googleButton}>
+            {googleLoading ? (
+              <div style={styles.spinner}></div>
+            ) : (
+              <>
+                <span style={styles.googleIcon}>
+                  <img
+                    src="https://developers.google.com/identity/images/g-logo.png"
+                    alt="Google Logo"
+                    width="20"
+                    height="20"
+                  />
+                </span>
+                <span style={styles.googleText}>Continue with Google</span>
+              </>
+            )}
+          </button>
 
           <div style={styles.links}>
             <Link to="/privacy-policy" style={styles.link}>
