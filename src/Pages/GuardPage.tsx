@@ -267,6 +267,7 @@ const GuardPage: React.FC = () => {
             <div style={sectionHeader}>
               <h2 style={sectionTitle}>
                 <i className="fas fa-user-clock" style={iconStyle} />
+                Avtive
               </h2>
               <button
                 onClick={fetchVisitors}
