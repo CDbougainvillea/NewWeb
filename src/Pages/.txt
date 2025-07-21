@@ -1,0 +1,7 @@
+[ BlogBanner ]
+[ FeaturedPost ]
+[ CategoryFilter ]
+[ BlogCards (Grid) ]
+[ Sidebar: RecentPosts | Author ]
+[ CallToAction ]
+[ Footer ]
