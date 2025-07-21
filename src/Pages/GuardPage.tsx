@@ -158,7 +158,7 @@ const GuardPage: React.FC = () => {
             color: activeTab === "active" ? "white" : "#555",
           }}
         >
-          <i className="fas fa-users" style={iconStyle} /> Active Visitors
+          <i className="fas fa-users" style={iconStyle} /> 
           {activeVisitors.length > 0 && (
             <span style={badgeStyle}>{activeVisitors.length}</span>
           )}
@@ -171,7 +171,7 @@ const GuardPage: React.FC = () => {
             color: activeTab === "history" ? "white" : "#555",
           }}
         >
-          <i className="fas fa-history" style={iconStyle} /> Visitor History
+          <i className="fas fa-history" style={iconStyle} /> 
           <span style={badgeStyle}>{visitors.length}</span>
         </button>
         <button onClick={handleLogout} style={logoutButtonStyle}>
