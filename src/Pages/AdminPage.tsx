@@ -375,7 +375,7 @@ const headerStyle: React.CSSProperties = {
   justifyContent: "space-between",
   alignItems: "center",
   padding: "16px 24px",
-  backgroundColor: "#0F0F0F",
+  backgroundColor: "#ffffffff",
   color: "#fff",
   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
   position: "sticky",
@@ -397,18 +397,18 @@ const userInfoStyle: React.CSSProperties = {
 
 const userIconStyle: React.CSSProperties = {
   fontSize: "1.2rem",
-  color: "#FF5800",
+  color: "#000000ff",
 };
 
 const emailStyle: React.CSSProperties = {
   fontSize: "0.9rem",
-  color: "#e0e0e0",
+  color: "#2b2b2bff",
 };
 
 const logoutButtonStyle: React.CSSProperties = {
   background: "transparent",
-  border: "1px solid #FF5800",
-  color: "#FF5800",
+  border: "1px solid #ff2d2dff",
+  color: "#ff2d2dff",
   padding: "8px 16px",
   borderRadius: "6px",
   cursor: "pointer",

@@ -42,7 +42,7 @@ function HeroSection() {
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+      background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)),
         url('https://images.pexels.com/photos/6585279/pexels-photo-6585279.jpeg');
       background-size: cover;
       background-position: center;

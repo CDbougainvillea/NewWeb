@@ -8,16 +8,20 @@ import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate(email === "guard@guard.com" ? "/guard" : "/admin");
     } catch (err) {
       alert("Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,6 +52,15 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
+      <style>
+        {`
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `}
+      </style>
+
       <Navbar />
       <div style={styles.page}>
         <div style={styles.card}>
@@ -81,8 +94,12 @@ const LoginPage: React.FC = () => {
             </span>
           </div>
 
-          <button onClick={handleLogin} style={styles.button}>
-            Log In
+          <button
+            onClick={handleLogin}
+            style={styles.button}
+            disabled={loading}
+          >
+            {loading ? <div style={styles.spinner}></div> : "Log In"}
           </button>
 
           {/* 💎 Stylish Google Button */}
@@ -141,6 +158,15 @@ const styles = {
       "url('https://images.pexels.com/photos/6585279/pexels-photo-6585279.jpeg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
+  },
+
+  spinner: {
+    width: "20px",
+    height: "20px",
+    border: "3px solid rgba(255, 255, 255, 0.3)",
+    borderTop: "3px solid white",
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
   },
 
   card: {
