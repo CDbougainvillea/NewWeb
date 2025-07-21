@@ -266,8 +266,7 @@ const GuardPage: React.FC = () => {
           <div>
             <div style={sectionHeader}>
               <h2 style={sectionTitle}>
-                <i className="fas fa-user-clock" style={iconStyle} /> Active
-                Visitors
+                <i className="fas fa-user-clock" style={iconStyle} />
               </h2>
               <button
                 onClick={fetchVisitors}
@@ -373,8 +372,7 @@ const GuardPage: React.FC = () => {
           <div>
             <div style={sectionHeader}>
               <h2 style={sectionTitle}>
-                <i className="fas fa-history" style={iconStyle} /> Visitor
-                History
+                <i className="fas fa-history" style={iconStyle} />
               </h2>
               <button
                 onClick={fetchVisitors}

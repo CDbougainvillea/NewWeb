@@ -4,7 +4,6 @@ import { auth, db } from "../firebase/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import html2canvas from "html2canvas";
 
 const AdminPage: React.FC = () => {
   const [toast, setToast] = useState<{
@@ -20,20 +19,7 @@ const AdminPage: React.FC = () => {
     navigate("/login");
   };
 
-  const handleDownloadPasskeyCard = () => {
-    const element = document.getElementById("passkeyCard");
-    if (!element) return;
 
-    element.style.display = "block";
-
-    html2canvas(element).then((canvas) => {
-      const link = document.createElement("a");
-      link.download = `visitor-pass-${passkey}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-      element.style.display = "none";
-    });
-  };
 
   // Visitor form state
   const [visitorName, setVisitorName] = useState("");
@@ -258,62 +244,19 @@ const AdminPage: React.FC = () => {
                   {passkey ? (
                     <>
                       <div style={passkeyDisplay}>{passkey}</div>
-                      <p style={passkeyHint}>
-                        Provide this passkey to the visitor. It will be required
-                        at the gate.
+                      <p>
+                        <strong>Passkey:</strong>{" "}
+                        <span
+                          style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+                        >
+                          {passkey}
+                        </span>
                       </p>
-                      <div style={{ marginTop: "15px" }}>
-                        <button
-                          onClick={() => navigator.clipboard.writeText(passkey)}
-                          style={copyButton}
-                        >
-                          <i className="fas fa-copy" /> Copy Passkey
-                        </button>
-
-                        <button
-                          onClick={handleDownloadPasskeyCard}
-                          style={{
-                            ...copyButton,
-                            backgroundColor: "#007bff",
-                            marginLeft: "10px",
-                          }}
-                        >
-                          <i className="fas fa-download" /> Download Card
-                        </button>
-                      </div>
-                      {/* Hidden card to be converted into image */}
-                      <div
-                        id="passkeyCard"
-                        style={{
-                          width: "350px",
-                          padding: "24px",
-                          backgroundImage: "url('/BgImage.jpg')",
-                          backgroundSize: "cover",
-                          color: "#fff",
-                          fontFamily: "Arial",
-                          display: "none",
-                          borderRadius: "12px",
-                          boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-                        }}
-                      >
-                        <h2 style={{ fontSize: "20px", marginBottom: "10px" }}>
-                          Visitor Pass
-                        </h2>
-                        <p>
-                          <strong>Passkey:</strong>{" "}
-                          <span
-                            style={{
-                              fontSize: "28px",
-                              fontWeight: "bold",
-                              letterSpacing: "2px",
-                              fontFamily: "monospace",
-                              color: "#fff",
-                            }}
-                          >
-                            {passkey}
-                          </span>
-                        </p>
-                      </div>
+                      <p style={{ marginTop: "0.5rem", color: "#555" }}>
+                        ⚠️ Please <strong>take a screenshot</strong> or{" "}
+                        <strong>write down this code</strong>. It will be
+                        required at the gate and cannot be retrieved later.
+                      </p>
                     </>
                   ) : (
                     <div style={emptyPasskey}>
@@ -536,12 +479,6 @@ const passkeyDisplay: React.CSSProperties = {
   background: "#fffaf0",
 };
 
-const passkeyHint: React.CSSProperties = {
-  color: "#666",
-  fontSize: "0.95rem",
-  lineHeight: 1.5,
-};
-
 const emptyPasskey: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
@@ -552,18 +489,7 @@ const emptyPasskey: React.CSSProperties = {
   padding: "30px 0",
 };
 
-const copyButton: React.CSSProperties = {
-  padding: "10px 20px",
-  backgroundColor: "#4A6FA5",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "8px",
-  fontSize: "0.95rem",
-};
+
 
 const toastStyle: React.CSSProperties = {
   position: "fixed",
