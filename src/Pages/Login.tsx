@@ -6,8 +6,6 @@ import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import {
-  GoogleAuthProvider,
-  signInWithRedirect,
   getRedirectResult,
 } from "firebase/auth";
 
@@ -22,7 +20,10 @@ const LoginPage: React.FC = () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate(email === "guard@guard.com" ? "/guard" : "/admin");
+      navigate(email === "guard@guard.com" ? "/guard" : "/admin", {
+        replace: true,
+      });
+
     } catch (err) {
       alert("Login failed");
     } finally {
@@ -30,14 +31,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // const handleGoogleLogin
-  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const handleGoogleLogin = () => {
-    setGoogleLoading(true);
-    const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
-  };
 
 
   useEffect(() => {
@@ -50,7 +44,10 @@ const LoginPage: React.FC = () => {
             alert("Unauthorized user");
             return;
           }
-          navigate(email === "guard@guard.com" ? "/guard" : "/admin");
+          navigate(email === "guard@guard.com" ? "/guard" : "/admin", {
+            replace: true,
+          });
+
         }
       })
       .catch((error) => {
@@ -117,24 +114,10 @@ const LoginPage: React.FC = () => {
             {loading ? <div style={styles.spinner}></div> : "Log In"}
           </button>
 
-          {/* 💎 Stylish Google Button */}
-          <button onClick={handleGoogleLogin} style={styles.googleButton}>
-            {googleLoading ? (
-              <div style={styles.spinner}></div>
-            ) : (
-              <>
-                <span style={styles.googleIcon}>
-                  <img
-                    src="https://developers.google.com/identity/images/g-logo.png"
-                    alt="Google Logo"
-                    width="20"
-                    height="20"
-                  />
-                </span>
-                <span style={styles.googleText}>Continue with Google</span>
-              </>
-            )}
-          </button>
+          <p style={styles.links}>
+            By logging in, you agree to our Privacy Policy and Terms &
+            Conditions
+          </p>
 
           <div style={styles.links}>
             <Link to="/privacy-policy" style={styles.link}>
@@ -265,7 +248,7 @@ const styles = {
   },
 
   links: {
-    marginTop: "1rem",
+    marginTop: "0rem",
     fontSize: "0.8rem",
     color: "#ddd",
     display: "flex",

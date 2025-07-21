@@ -6,6 +6,8 @@ import LoginPage from "./Pages/Login";
 import ProtectedRoute from "./Routes/Protected";
 import AdminPage from "./Pages/AdminPage";
 import GuardPage from "./Pages/GuardPage";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import TermsPage from "./Pages/TermsPage";
 
 
 
@@ -15,6 +17,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route
           path="/admin"
           element={
