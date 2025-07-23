@@ -20,9 +20,9 @@ initializeApp({
 
 const users = [
   { email: "guard@guard.com", role: "guard" },
-  { email: "resident1@example.com", role: "admin" },
-  { email: "resident2@example.com", role: "admin" },
-  { email: "resident3@example.com", role: "admin" },
+  { email: "resident1@gmail.com", role: "admin" },
+  { email: "resident2@gmail.com", role: "admin" },
+  { email: "resident3@gmail.com", role: "admin" },
   { email: "wall@wall.com", role: "admin" },
 ];
 
