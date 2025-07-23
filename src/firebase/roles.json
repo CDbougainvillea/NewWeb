@@ -1,0 +1,8 @@
+{
+  "guard": ["guard@guard.com"],
+  "admin": [
+    "admin@admin.com",
+    "test@test.com",
+    "wall@wall.com"
+  ]
+}

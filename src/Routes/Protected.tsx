@@ -1,3 +1,4 @@
+// src/components/Auth/ProtectedRoute.tsx
 import React, { useEffect, useState } from "react";
 import {
   onAuthStateChanged,
@@ -7,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import roles from "../firebase/roles.json"; // <-- Import the role list
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -24,7 +26,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
         return navigate("/");
       }
 
-      // Check session age
       const tokenResult = await getIdTokenResult(user);
       const authTime = Number(tokenResult.claims.auth_time) * 1000;
       const now = Date.now();
@@ -37,16 +38,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
         return;
       }
 
-      // Role-based check
       const email = user.email || "";
-      const isGuard = email === "guard@guard.com";
-      const isAdmin = email !== "guard@guard.com";
+      const allowedEmails = roles[role]; // role-based lookup
 
-      if ((role === "guard" && isGuard) || (role === "admin" && isAdmin)) {
+      if (allowedEmails.includes(email)) {
         setIsAllowed(true);
       } else {
+        alert("Unauthorized access.");
+        await signOut(auth);
         setIsAllowed(false);
-        navigate("/");
+        navigate("/", { replace: true });
       }
     });
 

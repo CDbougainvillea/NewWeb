@@ -5,9 +5,7 @@ import { auth } from "../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
-import {
-  getRedirectResult,
-} from "firebase/auth";
+import { getRedirectResult } from "firebase/auth";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,24 +13,34 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate(email === "guard@guard.com" ? "/guard" : "/admin", {
-        replace: true,
-      });
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
+      const tokenResult = await user.getIdTokenResult();
+      const role = tokenResult.claims.role;
+
+      if (role === "guard") {
+        navigate("/guard", { replace: true });
+      } else if (role === "admin") {
+        navigate("/admin", { replace: true });
+      } else {
+        alert("Unauthorized user");
+        await auth.signOut();
+      }
     } catch (err) {
       alert("Login failed");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
-
-
-
 
   useEffect(() => {
     getRedirectResult(auth)
@@ -47,7 +55,6 @@ const LoginPage: React.FC = () => {
           navigate(email === "guard@guard.com" ? "/guard" : "/admin", {
             replace: true,
           });
-
         }
       })
       .catch((error) => {

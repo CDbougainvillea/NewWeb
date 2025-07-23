@@ -2,6 +2,10 @@
 .env
 .env.*
 
+
+# 🔐 Firebase Admin service account key
+src/firebase/serviceAccountKey.json
+
 # Logs
 logs
 *.log
