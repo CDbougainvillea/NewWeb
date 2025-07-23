@@ -1,4 +1,3 @@
-// src/components/Auth/ProtectedRoute.tsx
 import React, { useEffect, useState } from "react";
 import {
   onAuthStateChanged,
@@ -8,7 +7,6 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import roles from "../firebase/roles.json"; // <-- Import the role list
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -27,6 +25,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
       }
 
       const tokenResult = await getIdTokenResult(user);
+      const userRole = tokenResult.claims.role;
+
       const authTime = Number(tokenResult.claims.auth_time) * 1000;
       const now = Date.now();
       const hoursSinceLogin = (now - authTime) / (1000 * 60 * 60);
@@ -38,10 +38,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, role }) => {
         return;
       }
 
-      const email = user.email || "";
-      const allowedEmails = roles[role]; // role-based lookup
-
-      if (allowedEmails.includes(email)) {
+      if (userRole === role) {
         setIsAllowed(true);
       } else {
         alert("Unauthorized access.");
