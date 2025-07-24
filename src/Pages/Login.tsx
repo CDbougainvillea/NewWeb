@@ -148,7 +148,7 @@ const styles = {
     alignItems: "center",
     height: "100vh",
     backgroundImage:
-      "url('/BgImage.jpg')",
+      "url('https://images.pexels.com/photos/33019583/pexels-photo-33019583.jpeg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
   },

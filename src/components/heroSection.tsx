@@ -43,7 +43,7 @@ function HeroSection() {
       align-items: flex-start;
       justify-content: center;
       background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)),
-        url('BgImage');
+        url('https://images.pexels.com/photos/33019583/pexels-photo-33019583.jpeg');
       background-size: cover;
       background-position: center;
       color: white;
