@@ -126,7 +126,7 @@ const DeliveryHistory: React.FC = () => {
 
         <div style={styles.refreshWrapper}>
           <button onClick={fetchLogs} style={styles.refreshBtn}>
-            🔄 Refresh
+            Refresh
           </button>
         </div>
       </div>
