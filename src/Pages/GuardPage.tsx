@@ -12,6 +12,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import DeliverySection from "./DeliverSection";
 
 const GuardPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"active" | "history">("active");
@@ -180,90 +181,103 @@ const GuardPage: React.FC = () => {
       </div>
 
       <div style={contentContainer}>
-        {/* Passkey Verification Section */}
-        <div style={verificationSection}>
-          <div style={sectionHeader}>
-            <h2 style={sectionTitle}>
-              <i className="fas fa-check-circle" style={iconStyle} /> Visitor
-              Check-in
-            </h2>
-          </div>
-
-          <div style={formContainer}>
-            <div style={inputGroup}>
-              <label style={labelStyle}>Enter Passkey</label>
-              <div style={inputWrapper}>
-                <input
-                  type="text"
-                  placeholder="Visitor passkey"
-                  value={verifyPasskey}
-                  onChange={(e) => setVerifyPasskey(e.target.value)}
-                  style={{
-                    ...inputStyle,
-                    textAlign: "center",
-                    letterSpacing: "2px",
-                    fontSize: "1.2rem",
-                    fontWeight: "bold",
-                  }}
-                  maxLength={6}
-                  disabled={verificationStatus === "pending"}
-                />
-                <button
-                  onClick={handleCheckIn}
-                  disabled={
-                    verificationStatus === "pending" || !verifyPasskey.trim()
-                  }
-                  style={{
-                    ...submitStyle,
-                    backgroundColor: "#4CAF50",
-                    marginTop: "15px",
-                    opacity:
-                      verificationStatus === "pending" || !verifyPasskey.trim()
-                        ? 0.7
-                        : 1,
-                    cursor:
-                      verificationStatus === "pending" || !verifyPasskey.trim()
-                        ? "not-allowed"
-                        : "pointer",
-                  }}
-                >
-                  {verificationStatus === "pending" ? (
-                    <>
-                      <i
-                        className="fas fa-spinner fa-spin"
-                        style={{ marginRight: "8px" }}
-                      />
-                      Verifying...
-                    </>
-                  ) : (
-                    <>
-                      <i
-                        className="fas fa-check"
-                        style={{ marginRight: "8px" }}
-                      />
-                      Confirm Check-in
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {verificationStatus === "success" && (
-              <div style={successMessage}>
-                <i className="fas fa-check-circle" /> Visitor checked in!
-              </div>
-            )}
-
-            {verificationStatus === "error" && (
-              <div style={errorMessage}>
-                <i className="fas fa-exclamation-triangle" /> Invalid passkey
-              </div>
-            )}
-          </div>
-        </div>
         {/* Active Visitors Tab */}
         {activeTab === "active" && (
           <div>
+            {/* Passkey Verification Section */}
+            <div style={verificationSection}>
+              <div style={sectionHeader}>
+                <h2 style={sectionTitle}>
+                  <i className="fas fa-check-circle" style={iconStyle} />{" "}
+                  Visitor Check-in
+                </h2>
+              </div>
+
+              <div style={formContainer}>
+                <div style={inputGroup}>
+                  <label style={labelStyle}>Enter Passkey</label>
+                  <div style={inputWrapper}>
+                    <input
+                      type="text"
+                      placeholder="Visitor passkey"
+                      value={verifyPasskey}
+                      onChange={(e) => setVerifyPasskey(e.target.value)}
+                      style={{
+                        ...inputStyle,
+                        textAlign: "center",
+                        letterSpacing: "2px",
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                      }}
+                      maxLength={6}
+                      disabled={verificationStatus === "pending"}
+                    />
+                    <button
+                      onClick={handleCheckIn}
+                      disabled={
+                        verificationStatus === "pending" ||
+                        !verifyPasskey.trim()
+                      }
+                      style={{
+                        ...submitStyle,
+                        backgroundColor: "#4CAF50",
+                        marginTop: "15px",
+                        opacity:
+                          verificationStatus === "pending" ||
+                          !verifyPasskey.trim()
+                            ? 0.7
+                            : 1,
+                        cursor:
+                          verificationStatus === "pending" ||
+                          !verifyPasskey.trim()
+                            ? "not-allowed"
+                            : "pointer",
+                      }}
+                    >
+                      {verificationStatus === "pending" ? (
+                        <>
+                          <i
+                            className="fas fa-spinner fa-spin"
+                            style={{ marginRight: "8px" }}
+                          />
+                          Verifying...
+                        </>
+                      ) : (
+                        <>
+                          <i
+                            className="fas fa-check"
+                            style={{ marginRight: "8px" }}
+                          />
+                          Confirm Check-in
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {verificationStatus === "success" && (
+                  <div style={successMessage}>
+                    <i className="fas fa-check-circle" /> Visitor checked in!
+                  </div>
+                )}
+
+                {verificationStatus === "error" && (
+                  <div style={errorMessage}>
+                    <i className="fas fa-exclamation-triangle" /> Invalid
+                    passkey
+                  </div>
+                )}
+              </div>
+            </div>
+            <section
+              style={{
+                marginTop: "2rem",
+                display: "flex",
+                gap: "2rem",
+                flexWrap: "wrap",
+              }}
+            ></section>
+
             <div style={sectionHeader}>
               <h2 style={sectionTitle}>
                 <i className="fas fa-user-clock" style={iconStyle} />
@@ -365,6 +379,10 @@ const GuardPage: React.FC = () => {
                 </table>
               </div>
             )}
+            <section>
+              {/* Other stuff */}
+              <DeliverySection />
+            </section>
           </div>
         )}
         {/* Visitor History Tab */}
