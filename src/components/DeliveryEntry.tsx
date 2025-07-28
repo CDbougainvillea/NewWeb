@@ -117,12 +117,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   cardContainer: {
     background: "#ffffff",
     borderRadius: "12px",
-    padding: "1rem",
+    padding: "0rem",
     flex: 1,
     maxWidth: 500,
   },
   sectionHeader: {
-    fontSize: "1.25rem",
+    fontSize: "1.2rem",
     fontWeight: 700,
     marginBottom: "1rem",
   },

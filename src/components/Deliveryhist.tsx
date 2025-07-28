@@ -138,13 +138,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   wrapper: {
     display: "flex",
     justifyContent: "center",
-    padding: "0.5rem",
+    padding: "0rem",
     width: "100%",
   },
   cardContainer: {
     background: "#fff",
     borderRadius: "10px",
-    padding: "1rem",
+    padding: "0rem",
     width: "100%",
     maxWidth: 480,
     display: "flex",
@@ -231,7 +231,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: "8px",
     cursor: "pointer",
     fontSize: "0.95rem",
-    marginTop: "6px",
+    marginTop: "11px",
   },
 };
 
