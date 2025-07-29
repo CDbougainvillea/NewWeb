@@ -111,7 +111,7 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  // Send passkey via WhatsApp
+  // Send passkey via WhatsApp - works on both mobile and desktop
   const sendViaWhatsApp = () => {
     if (!passkey) {
       showToast("No passkey generated yet", "error");
@@ -122,11 +122,15 @@ const AdminPage: React.FC = () => {
       lastVisitorDetails?.villaNumber || "N/A"
     } is: ${passkey}. Please present this passkey at the gate.`;
     const encodedMessage = encodeURIComponent(message);
-    const url = `https://web.whatsapp.com/send?text=${encodedMessage}`;
+
+    // URL that works for both mobile app and web
+    const url = `https://wa.me/?text=${encodedMessage}`;
+
+    // Open in new tab for better user experience
     window.open(url, "_blank");
   };
 
-  // Send passkey via SMS
+  // Send passkey via SMS - works on mobile and falls back to clipboard on desktop
   const sendViaSMS = () => {
     if (!passkey) {
       showToast("No passkey generated yet", "error");
@@ -136,9 +140,30 @@ const AdminPage: React.FC = () => {
     const message = `Your passkey for visiting Villa ${
       lastVisitorDetails?.villaNumber || "N/A"
     } is: ${passkey}. Please present this passkey at the gate.`;
-    const encodedMessage = encodeURIComponent(message);
-    const url = `sms:?body=${encodedMessage}`;
-    window.location.href = url;
+
+    // Check if device supports SMS
+    if ("sms" in navigator) {
+      // Mobile device with SMS support
+      (navigator as any).sms
+        .send({
+          body: message,
+        })
+        .catch((error: any) => {
+          console.error("Error sending SMS:", error);
+          showToast("Failed to send SMS. Please try again.", "error");
+        });
+    } else {
+      // Desktop device - copy to clipboard
+      navigator.clipboard
+        .writeText(message)
+        .then(() => {
+          showToast("SMS message copied to clipboard", "success");
+        })
+        .catch((err) => {
+          console.error("Failed to copy: ", err);
+          showToast("Failed to copy to clipboard", "error");
+        });
+    }
   };
 
   return (
@@ -288,6 +313,7 @@ const AdminPage: React.FC = () => {
                           gap: "10px",
                           marginTop: "10px",
                           justifyContent: "center",
+                          flexWrap: "wrap",
                         }}
                       >
                         <button
