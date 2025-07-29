@@ -137,9 +137,9 @@ const AdminPage: React.FC = () => {
       return;
     }
 
-    const message = `Your passkey for visiting Villa ${
+    const message = `Your passkey for visiting CD Bougainvillea, Villa No. ${
       lastVisitorDetails?.villaNumber || "N/A"
-    } is: ${passkey}. Please present this passkey at the gate.`;
+    } is: ${passkey}. Please present this passkey at the gate to the security guard.`;
 
     // Check if device supports SMS
     if ("sms" in navigator) {
