@@ -12,14 +12,17 @@ const AdminPage: React.FC = () => {
   } | null>(null);
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
+  // Add state for last visitor details
+  const [lastVisitorDetails, setLastVisitorDetails] = useState<{
+    phone: string;
+    villaNumber: string;
+  } | null>(null);
 
   const handleLogout = async () => {
     if (!window.confirm("Are you sure you want to log out?")) return;
     await signOut(auth);
     navigate("/login");
   };
-
-
 
   // Visitor form state
   const [visitorName, setVisitorName] = useState("");
@@ -89,6 +92,11 @@ const AdminPage: React.FC = () => {
       });
 
       setPasskey(newPasskey);
+      // Store visitor details for messaging
+      setLastVisitorDetails({
+        phone: phone.trim(),
+        villaNumber: villaNumber.trim(),
+      });
       showToast("Visitor registered successfully!", "success");
 
       // Reset form
@@ -101,6 +109,36 @@ const AdminPage: React.FC = () => {
       console.error("Error adding visitor:", error);
       showToast("Failed to register visitor. Please try again.", "error");
     }
+  };
+
+  // Send passkey via WhatsApp
+  const sendViaWhatsApp = () => {
+    if (!passkey) {
+      showToast("No passkey generated yet", "error");
+      return;
+    }
+
+    const message = `Your passkey for visiting Villa ${
+      lastVisitorDetails?.villaNumber || "N/A"
+    } is: ${passkey}. Please present this passkey at the gate.`;
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://web.whatsapp.com/send?text=${encodedMessage}`;
+    window.open(url, "_blank");
+  };
+
+  // Send passkey via SMS
+  const sendViaSMS = () => {
+    if (!passkey) {
+      showToast("No passkey generated yet", "error");
+      return;
+    }
+
+    const message = `Your passkey for visiting Villa ${
+      lastVisitorDetails?.villaNumber || "N/A"
+    } is: ${passkey}. Please present this passkey at the gate.`;
+    const encodedMessage = encodeURIComponent(message);
+    const url = `sms:?body=${encodedMessage}`;
+    window.location.href = url;
   };
 
   return (
@@ -244,14 +282,24 @@ const AdminPage: React.FC = () => {
                   {passkey ? (
                     <>
                       <div style={passkeyDisplay}>{passkey}</div>
-                      <p>
-                        <strong>Passkey:</strong>{" "}
-                        <span
-                          style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          marginTop: "10px",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <button
+                          onClick={sendViaWhatsApp}
+                          style={whatsappButtonStyle}
                         >
-                          {passkey}
-                        </span>
-                      </p>
+                          <i className="fab fa-whatsapp" /> Send via WhatsApp
+                        </button>
+                        <button onClick={sendViaSMS} style={smsButtonStyle}>
+                          <i className="fas fa-sms" /> Send via SMS
+                        </button>
+                      </div>
                       <p style={{ marginTop: "0.5rem", color: "#555" }}>
                         ⚠️ Please <strong>take a screenshot</strong> or{" "}
                         <strong>write down this code</strong>. It will be
@@ -489,8 +537,6 @@ const emptyPasskey: React.CSSProperties = {
   padding: "30px 0",
 };
 
-
-
 const toastStyle: React.CSSProperties = {
   position: "fixed",
   bottom: "30px",
@@ -503,6 +549,33 @@ const toastStyle: React.CSSProperties = {
   animation: "slideIn 0.3s ease-out",
   display: "flex",
   alignItems: "center",
+};
+
+// New button styles
+const whatsappButtonStyle: React.CSSProperties = {
+  backgroundColor: "#25D366",
+  color: "white",
+  border: "none",
+  padding: "10px 15px",
+  borderRadius: "6px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  fontWeight: 500,
+};
+
+const smsButtonStyle: React.CSSProperties = {
+  backgroundColor: "#3B82F6",
+  color: "white",
+  border: "none",
+  padding: "10px 15px",
+  borderRadius: "6px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  fontWeight: 500,
 };
 
 export default AdminPage;
