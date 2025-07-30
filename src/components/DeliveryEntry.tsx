@@ -16,7 +16,7 @@ const DeliveryEntryForm: React.FC = () => {
     setError("");
     setSuccess(false);
 
-    if (!name || !phone || !license || !vehicle || !villa || !company) {
+    if (!name || !phone || !vehicle || !villa || !company) {
       setError("Please fill all fields");
       return;
     }

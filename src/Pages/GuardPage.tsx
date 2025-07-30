@@ -201,7 +201,14 @@ const GuardPage: React.FC = () => {
                       type="text"
                       placeholder="Visitor passkey"
                       value={verifyPasskey}
-                      onChange={(e) => setVerifyPasskey(e.target.value)}
+                      onChange={(e) => {
+                        const rawInput = e.target.value.toUpperCase();
+                        const filteredInput = rawInput.replace(
+                          /[^A-Z0-9]/g,
+                          ""
+                        );
+                        setVerifyPasskey(filteredInput.slice(0, 6));
+                      }}
                       style={{
                         ...inputStyle,
                         textAlign: "center",
@@ -212,6 +219,7 @@ const GuardPage: React.FC = () => {
                       maxLength={6}
                       disabled={verificationStatus === "pending"}
                     />
+
                     <button
                       onClick={handleCheckIn}
                       disabled={
